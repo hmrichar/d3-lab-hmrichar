@@ -3,7 +3,7 @@
 // ============================================================================
 
 // ============================================================================
-// SECTION 1: D3 SELECTIONS & DOM MANIPULATION 
+// SECTION 1: D3 SELECTIONS & DOM MANIPULATION
 // ============================================================================
 // D3 = "Data-Driven Documents" - it connects data to visual elements
 // DOM = Document Object Model - the structure of the webpage (HTML elements)
@@ -21,6 +21,9 @@ d3.select('#demo-1')
 
 // TODO: change the text above to add your name
 // TODO: change the color to something else you like // keep in mind color contrast
+d3.select('#demo-1')
+    .style('color', 'green')
+    .text('This text was changed by D3! My name is Haley.');
 
 
 // Create and append new elements
@@ -30,16 +33,20 @@ d3.select('#demo-1')
     .style('background-color', 'lightgray');
 
 // TODO: append a new element with your favorite food and style it with a different background color
+d3.select('#demo-1')
+    .append('p')
+    .text('My favorite food is pasta!')
+    .style('background-color', 'lightgreen');
 
 // ============================================================================
-// SECTION 2: DATA BINDING - The Core D3 Pattern 
+// SECTION 2: DATA BINDING - The Core D3 Pattern
 // ============================================================================
 
 // D3's core pattern is to bind data to DOM elements and then use that data to create visualizations
 
 // To demonstrate that we will first load the data (we'll cover it in Section 4)
 
-// Sample data - gas prices in 5 states chosen randomly. 
+// Sample data - gas prices in 5 states chosen randomly.
 const energyData = await d3.csv('data/state_energy_prices.csv');
 const sampledData = energyData.filter(d => ['California','Texas','New York','Illinois','Michigan'].includes(d.state));
 const gasPrices = sampledData.map(item => parseFloat(item.gas));
@@ -60,13 +67,25 @@ d3.select('#demo-2')
 
 // TODO: sample electricity prices instead of gas and create rectangles instead of circles; make the color of the rectangles green;
 const electricityPrices = sampledData.map(item => parseFloat(item.elec));
-// YOUR CODE GOES HERE 
+// YOUR CODE GOES HERE
+d3.select('#demo-2')
+    .append('svg')
+    .attr('width', 400)
+    .attr('height', 100)
+    .selectAll('rect')
+    .data(electricityPrices)
+    .join('rect')
+    .attr('x', (d, i) => i * 60 + 30)
+    .attr('y', d => 100 - d * 100)  // invert the axis
+    .attr('width', 40)
+    .attr('height', d => d * 100)
+    .attr('fill', 'green');
 
 // Remember that circle needs radius (r) and center (cx, cy) to create it,
 // while rectangles need x, y, width, and height. You can use the electricity price to determine the height of the rectangle and set a fixed width.
 
 // ============================================================================
-// SECTION 3: SCALES - Mapping Data to Pixels 
+// SECTION 3: SCALES - Mapping Data to Pixels
 // ============================================================================
 // Scales convert data values → visual properties (position, size, color)
 
@@ -80,7 +99,7 @@ console.log('xScale(0):', xScale(0)); // Should be 0 [which means that a data va
 console.log('xScale(50):', xScale(50)); // Should be 200 [which means that a data value of 50 maps to 200 pixels, which is halfway across the SVG]
 console.log('xScale(100):', xScale(100)); // Should be 400 [which means that a data value of 100 maps to 400 pixels, which is the full width of the SVG]
 
-// Common scale types: 
+// Common scale types:
 // - scaleLinear: for continuous numerical data (e.g., prices, temperatures)
 // - scaleTime/scaleUtc: for dates (e.g., stock prices over time)
 // - scaleOrdinal: for categorical data (e.g., colors for different categories)
@@ -101,7 +120,7 @@ console.log('colorScale("A") =', colorScale('A'));  // Should be 'red'
 const data = await d3.csv('data/state_energy_prices.csv');
 console.log('Loaded data:', data);
 
-// Now let's create a bar chart with top 15 states by electricity price 
+// Now let's create a bar chart with top 15 states by electricity price
 energyData.sort((a, b) => parseFloat(b.elec) - parseFloat(a.elec)); // Sort data by electricity price (descending)
 let top15 = energyData.slice(0, 15); // Get top 15 states
 top15 = top15.map(d => ({ state: d.state, elec: parseFloat(d.elec) })); // Convert electricity price to number and keep only state and electricity
@@ -119,7 +138,7 @@ const barSvg = d3.select('#demo-4')
     .append('g')
     .attr('transform', `translate(${barMargin.left},${barMargin.top})`);
 
-// We are using viewBox here, which allows the SVG to scale responsively while maintaining the aspect ratio. 
+// We are using viewBox here, which allows the SVG to scale responsively while maintaining the aspect ratio.
 // This means that the chart will resize based on the size of the container, making it look good on different screen sizes.
 
 // We also added attribute preserveAspectRatio to ensure that the aspect ratio is maintained when the SVG scales.
