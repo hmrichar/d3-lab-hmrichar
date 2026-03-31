@@ -47,6 +47,6 @@ As you complete the TODO exercises, commit and push your changes to your fork:
 
 ```bash
 git add .
-git commit -m "your message here"
+g
 git push
 ```

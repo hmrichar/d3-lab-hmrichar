@@ -181,7 +181,7 @@ svg.append('text')
 svg.append('text')
     .attr('class', 'x-axis-label')
     .attr('x', width / 2)
-    .attr('y', height - 10) // Position it below the x-axis ticks
+    .attr('y', height + 35) // Position it below the x-axis ticks
     .attr('text-anchor', 'middle')
     .style('font-size', '14px')
     .text('Date');
@@ -192,10 +192,10 @@ svg.append('text')
     .attr('class', 'y-axis-label')
     .attr('transform', 'rotate(-90)')
     .attr('x', -height / 2)
-    .attr('y', 20) // Position it to the left of the y-axis ticks
+    .attr('y', -70) // Position it to the left of the y-axis ticks
     .attr('text-anchor', 'middle')
     .style('font-size', '14px')
-    .text('Price');
+    .text('Closing Price (USD)');
 
 
 // ============================================================================
